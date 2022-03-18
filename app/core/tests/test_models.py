@@ -8,11 +8,7 @@ class ModelTests(TestCase):
         """Test creating a new user with an email is successful"""
         email = 'test@londonappdev.com'
         password = 'Password123'
-        user = get_user_model().objects.create_user(
-			email=email,
-			password=password
-		)
-
+        user = get_user_model().objects.create_user(email, password)
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
 
@@ -27,3 +23,13 @@ class ModelTests(TestCase):
         """Test creating a new user with no email should raises an error"""
         with self.assertRaises(ValueError):
             get_user_model().objects.create_user(None, 'pass123')
+
+    def test_create_super_user(self):
+        """Test create super use"""
+        user = get_user_model().objects.create_superuser(
+         "test@test.com",
+         "pass123"
+        )
+
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.is_staff)
